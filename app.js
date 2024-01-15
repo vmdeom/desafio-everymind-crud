@@ -1,10 +1,15 @@
-const express = require('express');
-const bodyparser = require('body-parser');
-const dotenv = require('dotenv');
+import { openDB } from './configDB.js'
+
+import express from 'express';
+import dotenv from 'dotenv'
 
 const app = express();
 
-app.use('view engine', 'ejs');
-app.use(bodyparser.urlencoded({extended: false}));
+openDB();
 
-app.listen(PORT, ADDRESS, () => console.log(`Listening at ${ADDRESS}:${PORT}`));
+app.set('view engine', 'ejs');
+app.use(express.json());
+
+dotenv.config({ path: './.env'});
+
+app.listen(process.env.PORT, process.env.ADDRESS, () => console.log(`Listening at ${process.env.ADDRESS}:${process.env.PORT}`))
