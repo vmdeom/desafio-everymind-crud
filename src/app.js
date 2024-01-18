@@ -1,8 +1,10 @@
 import { openDB } from './configDB.js'
-import { createTable, selectProdutos, insertProduto, updateProduto, deleteProduto } from './controller/Produto.js';
+import { createTable, selectProduto, selectProdutos, insertProduto, updateProduto, deleteProduto } from './controller/Produto.js';
 
 import express from 'express';
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
+import pkg from 'body-parser';
+const { urlencoded } = pkg;
 
 const app = express();
 
@@ -11,28 +13,35 @@ const app = express();
 createTable();
 
 app.set('view engine', 'ejs');
+app.use(urlencoded({extended: false}))
 app.use(express.json());
 
 dotenv.config({ path: './.env'});
 
 app.get('/', (req, res) =>{
-    //res.send('working')
-    res.render('home.ejs')
+    res.send('working')
+    //res.render('home.ejs')
+})
+
+app.get('/produto', async(req, res) => {
+    let produtos = await selectProdutos();
+    if(req.query.id){
+        let produto = await selectProduto(req.query.id);
+        res.render('home.ejs', {action: '/produto/edit', data1: produtos, data2: produto});
+        return
+    }
+    else{
+        res.render('home.ejs', {action: '/produto', data1: produtos, data2: {"id": "", "nome": "", "descricao": "", "preco": ""}});
+        return
+    }
 })
 
 app.post('/produto', (req, res) => {
-    insertProduto(req.body)
-    res.json({
-        "statusCode": 200
-    })
+    const {nome, descricao, preco} = req.body;
+    insertProduto(req.body).then(res.redirect('/produto'))
 })
 
-app.get('/produto', async (req, res) => {
-    let produto = await selectProdutos();
-    res.json(produto)
-})
-
-app.put('/produto', (req, res) => {
+app.post('/produto/edit', (req, res) => {
     if(req.body && !req.body.id)
     {
         res.json({
@@ -42,10 +51,8 @@ app.put('/produto', (req, res) => {
     }
     else
     {
-        updateProduto(req.body)
-        res.json({
-                "statusCode": 200
-            })
+        const {nome, descricao, preco} = req.body;
+        updateProduto(req.body).then(res.redirect('/produto'))
     }
 })
 

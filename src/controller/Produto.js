@@ -2,7 +2,13 @@ import { openDB } from "../configDB.js";
 
 export async function createTable(){
     openDB().then(db=>{
-        db.exec('CREATE TABLE IF NOT EXISTS Produto ( id INTEGER PRIMARY KEY, nome TEXT, codigo TEXT, descricao TEXT, preco REAL)')
+        db.exec('CREATE TABLE IF NOT EXISTS Produto ( id INTEGER PRIMARY KEY, nome TEXT, descricao TEXT, preco REAL)')
+    })
+}
+
+export async function selectProduto(id){
+    return openDB().then(db=>{
+        return db.get('SELECT * FROM Produto WHERE id=?', [id]).then(res=>res)
     })
 }
 
@@ -14,13 +20,13 @@ export async function selectProdutos(Produto){
 
 export async function insertProduto(produto){
     openDB().then(db=>{
-        db.run('INSERT INTO Produto (nome, codigo, descricao, preco) VALUES(?,?,?,?)', [produto.nome, produto.codigo, produto.descricao, produto.preco]);
+        db.run('INSERT INTO Produto (nome, descricao, preco) VALUES(?,?,?)', [produto.nome, produto.descricao, produto.preco]);
     });
 }
 
 export async function updateProduto(produto){
     openDB().then(db=>{
-        db.run('UPDATE Produto SET nome=?, codigo=?, descricao=?, preco=? WHERE id=?', [produto.nome, produto.codigo, produto.descricao, produto.preco, produto.id])
+        db.run('UPDATE Produto SET nome=?, descricao=?, preco=? WHERE id=?', [produto.nome, produto.descricao, produto.preco, produto.id])
     })
 }
 

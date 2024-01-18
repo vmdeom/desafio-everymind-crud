@@ -5,11 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nunes Sports</title>
 </head>
+
 <body>
+
     <div>
-        <form action="/produto" method="get">
-            <button type="submit">Exibir Produtos</button>
+        <form action="<%= action %>" method="post">
+            <div>
+                <label for="id-reg">ID</label>
+                <input type="text" name="id" id="id-reg" value="<%= data2.id %>">
+            </div>
+            <div>
+                <label for="nome-reg">Nome</label>
+                <input type="text" name="nome" id="nome-reg" value="<%= data2.nome %>">
+            </div>
+            <div>
+                <label for="descricao-reg">Descirção</label>
+                <input type="text" name="descricao" id="descricao-reg" value="<%= data2.descricao %>">
+            </div>
+            <div>
+                <label for="preco-reg">Preço</label>
+                <input type="text" name="preco" id="preco-reg" value="<%= data2.preco %>">
+            </div>
+
+            <button type="submit">Enviar</button>
+            <button type="reset">Limpar</button>
+
         </form>
+    </div>
+    
+    <div>
+        <table>
+            <tr>
+                <th>id</th><th>Nome</th><th>Descirção</th><th>Preço</th><th>Ações</th>
+            </tr>
+            <% for (var i = 0; i < data1.length; i++) { %>
+                <tr>
+                    <form action="/produto" method="get">
+                        <td><input type="text" name="id" value="<%= data1[i].id %>"</td>
+                        <td><%= data1[i].nome %></td>
+                        <td><%= data1[i].descricao %></td>
+                        <td><%= data1[i].preco %></td>
+                        <td><button type="submit">Editar</button></td>
+                        <td><button type="submit">Excluir</button></td>
+                    </form>
+                </tr>
+            <% } %>
+        </table>
     </div>
 </body>
 </html>
