@@ -71,9 +71,10 @@ function createProduto(d){
             'Content-type': 'application/json'
         },
         body: JSON.stringify({
+            id: parseInt(d.id),
             nome: d.nome,
             descricao: d.desc,
-            preco: d.preco
+            preco: parseFloat(d.preco)
         })
      }
 
@@ -84,7 +85,7 @@ function createProduto(d){
 
 }
 
-function updateProduto(d){
+async function updateProduto(d){
 
     let url = '/produto'
 
@@ -96,8 +97,8 @@ function updateProduto(d){
            body: JSON.stringify({
                 nome: d.nome.value,
                 descricao: d.desc.value,
-                preco: d.preco.value,
-                id: d.id.value
+                preco: parseFloat(d.preco.value),
+                id: d.id.value + 1
             })
         }
         
@@ -114,9 +115,8 @@ function updateProduto(d){
 
 function deleteProduto(d){
 
-    let ids = document.getElementsByName('td-id')
-    let id = ids[d.split('-')[2]].innerHTML
-    let row = document.getElementById(`tr-id-${id - 1}`)
+    let id = d.split('-')[2]
+    let row = document.getElementById(`tr-id-${id}`)
 
     let url = '/produto'
 

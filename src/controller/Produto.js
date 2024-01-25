@@ -2,7 +2,7 @@ import { openDB } from "../configDB.js";
 
 export async function createTable(){
     openDB().then(db=>{
-        db.exec('CREATE TABLE IF NOT EXISTS Produto ( id INTEGER PRIMARY KEY, nome TEXT, descricao TEXT, preco REAL)')
+        db.exec('CREATE TABLE IF NOT EXISTS Produto ( id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, descricao TEXT, preco REAL)')
     })
 }
 
@@ -26,7 +26,7 @@ export async function insertProduto(produto){
 
 export async function updateProduto(produto){
     openDB().then(db=>{
-        db.run('UPDATE Produto SET nome=?, descricao=?, preco=? WHERE id=?', [produto.nome, produto.descricao, produto.preco, produto.id])
+        db.run('UPDATE Produto SET nome=?, descricao=?, preco=? WHERE id=?', [produto.nome, produto.descricao, produto.preco, produto.id]).then(res=>res)
     })
 }
 

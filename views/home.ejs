@@ -42,14 +42,14 @@
                 <th></th><th>Nome</th><th>Descirção</th><th>Preço</th><th>Ações</th>
             </tr>
             <% for (var i = 0; i < data.length; i++) { %>
-                <tr id="<%='tr-id-' + i %>">
+                <tr id="<%='tr-id-' + data[i].id %>">
                     <form action="/produto" method="get">
-                        <td id="<%= 'td-id-' + i %>" name="td-id" value="<%= i %>"></td>
+                        <td id="<%= 'td-id-' + i %>" name="td-id" value="<%= data[i].id %>"></td>
                         <td id="<%= 'nome-id-' + i %>" name="td-nome"><%= data[i].nome %></td>
                         <td id="<%= 'desc-id-' + i %>" name="td-desc"><%= data[i].descricao %></td>
                         <td id="<%= 'preco-id-' + i %>" name="td-preco"><%= data[i].preco %></td>
-                        <td><button type="button" id="<%= 'edit-btn-' + i %>" name="edit-btn">Editar</button></td>
-                        <td><button type="button" id="<%= 'delete-btn-' + i%>" name="delete-btn">Excluir</button></td>
+                        <td><button type="button" id="<%= 'edit-btn-' + data[i].id %>" name="edit-btn">Editar</button></td>
+                        <td><button type="button" id="<%= 'delete-btn-' + data[i].id %>" name="delete-btn">Excluir</button></td>
                     </form>
                 </tr>
             <% } %>

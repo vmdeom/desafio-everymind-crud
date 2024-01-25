@@ -30,12 +30,10 @@ app.get('/produto', async(req, res) => {
 })
 
 app.post('/produto', async(req, res) => {
-    console.log('posting')
-    insertProduto(req.body);
+    insertProduto(req.body).then(res.json(req.body));
 })
 
 app.put('/produto', async(req, res) => {
-    console.log(`${req.body.nome} putting`)
     if(req.body && !req.body.id)
     {
         res.json({
@@ -45,14 +43,12 @@ app.put('/produto', async(req, res) => {
     }
     else
     {
-        let produto = await updateProduto(req.body)
-        res.json(produto)
+        updateProduto(req.body).then(res.json(req.body))
     }
 })
 
-app.delete('/produto', async (req, res) => {
-    let produto = await deleteProduto(req.body.id);
-    res.json(produto);
+app.delete('/produto', async(req, res) => {
+    deleteProduto(req.body.id).then(res.json(req.body.id))
 })
 
 app.listen(process.env.PORT, process.env.ADDRESS, () => console.log(`Listening at ${process.env.ADDRESS}:${process.env.PORT}`))
