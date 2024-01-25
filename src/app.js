@@ -13,8 +13,9 @@ const app = express();
 createTable();
 
 app.set('view engine', 'ejs');
-app.use(urlencoded({extended: false}))
+app.use(urlencoded({extended: false}));
 app.use(express.json());
+app.use(express.static('public'));
 
 dotenv.config({ path: './.env'});
 
@@ -28,12 +29,13 @@ app.get('/produto', async(req, res) => {
     res.render('home.ejs', {action: '/produto', data: produtos});
 })
 
-app.post('/produto', (req, res) => {
-    const {nome, descricao, preco} = req.body;
-    insertProduto(req.body).then(res.redirect('/produto'));
+app.post('/produto', async(req, res) => {
+    console.log('posting')
+    insertProduto(req.body);
 })
 
-app.put('/produto', (req, res) => {
+app.put('/produto', async(req, res) => {
+    console.log(`${req.body.nome} putting`)
     if(req.body && !req.body.id)
     {
         res.json({
@@ -43,8 +45,8 @@ app.put('/produto', (req, res) => {
     }
     else
     {
-        const {nome, descricao, preco} = req.body;
-        updateProduto(req.body).then(res.redirect('/produto'));
+        let produto = await updateProduto(req.body)
+        res.json(produto)
     }
 })
 
