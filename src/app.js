@@ -21,12 +21,11 @@ dotenv.config({ path: './.env'});
 
 app.get('/', (req, res) =>{
     res.send('working')
-    //res.render('home.ejs')
 })
 
 app.get('/produto', async(req, res) => {
     let produtos = await selectProdutos();
-    res.render('home.ejs', {action: '/produto', data: produtos});
+    res.render('home.ejs', {data: produtos});
 })
 
 app.post('/produto', async(req, res) => {
